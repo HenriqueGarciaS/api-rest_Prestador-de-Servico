@@ -19,6 +19,8 @@ routes.post('/loginPrestador',PrestadorController.login);
 routes.post('/prestador',PrestadorController.store);
 routes.post('/fazeranuncio/:id_prestador',AnuncioController.store);
 routes.post('/deletarPrestador/:id_prestador',PrestadorController.delete);
-routes.post('/updatePrestador/:id_prestador',PrestadorController.updateName);
+routes.post('/deletarAnuncio/:id_anuncio',AnuncioController.delete);
+routes.post('/updatePrestador/:id_prestador',PrestadorController.updatePrestador);
+routes.post('/updateAnuncio/:id_anuncio',AnuncioController.update);
 
 module.exports = routes;

@@ -49,9 +49,9 @@ module.exports = {
         return res.json(prestador);
     },
 
-    async updateName(req,res){
+    async updatePrestador(req,res){
         const {id_prestador} = req.params;
-        const {nome} = req.body;
+        const {nome,senha,telefone,estado,cidade,email} = req.body;
 
         const prestador = await Prestador.findByPk(id_prestador);
 
@@ -59,8 +59,13 @@ module.exports = {
             return res.status(400).json({error: "Prestador não encontrado"});
 
             prestador.nome = nome;
+            prestador.senha = senha;
+            prestador.telefone = telefone;
+            prestador.estado = estado;
+            prestador.cidade = cidade;
+            prestador.email = email;
 
-            prestador.save({fields:['nome']});
+            await prestador.save();
 
             return res.json(prestador);
     }
