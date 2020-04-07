@@ -19,7 +19,7 @@ module.exports = {
 
     async store(req,res) {
         const {id_prestador} = req.params;
-        const {cidade,descricao,horarios,valor} = req.body;
+        const {cidade,descricao,horarios,valor,imagem} = req.body;
 
         const prestador =  await Prestador.findByPk(id_prestador);
 
@@ -30,6 +30,7 @@ module.exports = {
         descricao,
         horarios,
         valor,
+        imagem,
         id_prestador
     })
 
@@ -39,7 +40,7 @@ module.exports = {
 
     async update(req,res){
         const{id_anuncio} = req.params;
-        const{cidade,descricao,horarios,valor} = req.body;
+        const{cidade,descricao,horarios,valor,imagem} = req.body;
 
         const anuncio = await Anuncio.findByPk(id_anuncio);
         
@@ -50,6 +51,7 @@ module.exports = {
         anuncio.descricao = descricao;
         anuncio.horarios = horarios;
         anuncio.valor = valor;
+        anuncio.imagem = imagem;
 
         await anuncio.save();
         return res.json(anuncio);

@@ -40,6 +40,10 @@ module.exports = {
     valor:{
       type:Sequelize.INTEGER,
       allowNull:false
+    },
+
+    imagem:{
+      type:Sequelize.STRING,
     }
 
 
