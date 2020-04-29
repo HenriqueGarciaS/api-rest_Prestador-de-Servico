@@ -1,37 +1,37 @@
 const Anuncio = require('../models/Anuncio');
-const Prestador = require('../models/Prestador');
+const Usuario = require('../models/Usuario');
 
 module.exports = {
     
 
     async index(req,res){
-        const {id_prestador} = req.params;
+        const {id_usuario} = req.params;
 
-        const prestador = await Prestador.findByPk(id_prestador);
+        const usuario = await Usuario.findByPk(id_usuario);
 
-        if(!prestador)
-        return res.status(400).json({error:"Prestador não encontrado"});
+        if(!usuario)
+        return res.status(400).json({error:"Usuario não encontrado"});
 
-        const anuncio = await Anuncio.findAll({where:{ id_prestador: id_prestador}});
-        return res.json({prestador,anuncio});
+        const anuncio = await Anuncio.findAll({where:{ id_usuario: id_usuario}});
+        return res.json({usuario,anuncio});
 
     },
 
     async store(req,res) {
-        const {id_prestador} = req.params;
+        const {id_usuario} = req.params;
         const {cidade,descricao,horarios,valor,imagem} = req.body;
 
-        const prestador =  await Prestador.findByPk(id_prestador);
+        const usuario =  await Usuario.findByPk(id_usuario);
 
-        if(!prestador)
-        return res.status(400).json({error:"Prestador não encontrado"});
+        if(!usuario)
+        return res.status(400).json({error:"Usuário não encontrado"});
 
          const anuncio =  await  Anuncio.create({cidade,
         descricao,
         horarios,
         valor,
         imagem,
-        id_prestador
+        id_usuario
     })
 
         return res.json(anuncio);

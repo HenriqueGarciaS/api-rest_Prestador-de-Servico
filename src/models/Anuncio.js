@@ -15,7 +15,7 @@ class Anuncio extends Model{
     }
 
     static associate(models){
-       this.belongsTo(models.Prestador,{foreignKey:"id_prestador"});
+       this.belongsTo(models.Usuario,{foreignKey:"id_usuario"});
     }
 
 }

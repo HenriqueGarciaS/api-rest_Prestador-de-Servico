@@ -3,7 +3,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
   
-      return queryInterface.createTable('Prestador',
+      return queryInterface.createTable('Usuario',
        { id: {
          type: Sequelize.INTEGER,
          primaryKey: true,
@@ -38,8 +38,16 @@ module.exports = {
        email:{
          type:Sequelize.STRING,
          allowNull:false
+       },
+
+       anuncios_favoritos:{
+         type:Sequelize.STRING,
+         allowNull:true
        }
+
       });
+
+
     
   },
 
