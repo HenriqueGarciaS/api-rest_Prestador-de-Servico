@@ -8,13 +8,15 @@ class Anuncio extends Model{
            descricao: DataTypes.STRING,
            horarios: DataTypes.STRING,
            valor: DataTypes.STRING, 
+           imagem: DataTypes.STRING,
+           classificacao:DataTypes.INTEGER
         },{
             sequelize : connection
         })
     }
 
     static associate(models){
-       this.belongsTo(models.Prestador,{foreignKey:"id_prestador"});
+       this.belongsTo(models.Usuario,{foreignKey:"id_usuario"});
     }
 
 }

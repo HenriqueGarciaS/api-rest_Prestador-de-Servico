@@ -11,11 +11,11 @@ module.exports = {
       allowNull: false
     }, 
 
-    id_prestador:{
+    id_usuario:{
       type : Sequelize.INTEGER,
       allowNull:false,
       references:{
-        model : 'Prestador', 
+        model : 'Usuario', 
         key: "id"
       },
       onUpdate: 'Cascade',
@@ -40,6 +40,10 @@ module.exports = {
     valor:{
       type:Sequelize.INTEGER,
       allowNull:false
+    },
+
+    imagem:{
+      type:Sequelize.STRING,
     }
 
 
