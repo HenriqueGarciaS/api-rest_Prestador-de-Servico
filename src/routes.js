@@ -13,6 +13,7 @@ routes.get('/',(req,res) =>{
 routes.get('/usuarios',UsuarioController.index);
 routes.get('/usuario/:id_usuario',UsuarioController.FindOne);
 routes.get('/anuncio/:id_usuario',AnuncioController.index);
+routes.get('/anuncios',AnuncioController.findAll);
 routes.get('/chat/:id_usuario',ChatController.findOne);
 routes.get('/denuncia/:id_usuario',DenunciaController.findDenuncia);
 
