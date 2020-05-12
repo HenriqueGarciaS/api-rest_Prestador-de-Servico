@@ -4,6 +4,19 @@ const Usuario = require('../models/Usuario');
 module.exports = {
     
 
+    async findAll(req,res){
+
+
+        const anuncio = await Anuncio.findAll();
+
+        if(!anuncio)
+        return res.status(400).json({error:"Nenhum anuncio registrado"});
+
+        return res.json(anuncio);
+
+
+    },
+
     async index(req,res){
         const {id_usuario} = req.params;
 
