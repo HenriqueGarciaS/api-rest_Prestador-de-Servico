@@ -80,7 +80,7 @@ module.exports = {
         if(!anuncio)
         res.status(400).json({error:"Anuncio não encontrado"});
 
-        anuncio.classificacao = classificacao;
+        anuncio.classificacao = classificacao + anuncio.classificacao;
 
         await anuncio.save();
 

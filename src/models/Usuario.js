@@ -10,6 +10,7 @@ class Usuario extends Model{
             estado: DataTypes.STRING,
             cidade: DataTypes.STRING,
             email: DataTypes.STRING, 
+            anuncios_favoritos: DataTypes.STRING
         },{
             sequelize : connection
         })
