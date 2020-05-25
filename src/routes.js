@@ -21,6 +21,7 @@ routes.post('/gravarChat',ChatController.store);
 routes.post('/updateChat/:id_chat',ChatController.updateChat);
 routes.post('/loginUsuario',UsuarioController.login);
 routes.post('/usuario',UsuarioController.store);
+routes.post('/anuncioFavorito/:id_usuario',UsuarioController.updateFavoritos);
 routes.post('/fazeranuncio/:id_usuario',AnuncioController.store);
 routes.post('/fazerDenuncia/:id_anuncio',DenunciaController.store);
 routes.post('/deletarUsuario/:id_usuario',UsuarioController.delete);

@@ -9,7 +9,9 @@ class Anuncio extends Model{
            horarios: DataTypes.STRING,
            valor: DataTypes.STRING, 
            imagem: DataTypes.STRING,
-           classificacao:DataTypes.INTEGER
+           classificacao:DataTypes.INTEGER,
+           titulo: DataTypes.STRING,
+           usuario: DataTypes.STRING
         },{
             sequelize : connection
         })

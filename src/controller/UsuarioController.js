@@ -11,7 +11,7 @@ module.exports = {
         if(!usuario)
         return res.status(400).json({error: "Usuário não encontrado"});
 
-        return res.json(usuario);
+        return res.json({id:usuario.id});
     },
 
     async index(req,res){
@@ -67,6 +67,28 @@ module.exports = {
 
             await usuario.save();
 
-            return res.json(usuario);
-    }
+            return res.json(usuario.nome);
+    },
+
+    async updateFavoritos(req,res){
+        const{id_usuario} = req.params;
+        const {anuncio_favorito} = req.body;
+        
+        const usuario = await Usuario.findByPk(id_usuario);
+
+        if(!usuario)
+        return res.status(400).json({error: "usuario não encontrado"});
+        
+        if(usuario.anuncios_favoritos === null)
+        usuario.anuncios_favoritos = anuncio_favorito;
+        else
+        usuario.anuncios_favoritos = usuario.anuncios_favoritos + "," + anuncio_favorito;
+        
+        await usuario.save();
+
+        return res.json(usuario);
+
+
+
+    } 
 }
