@@ -32,12 +32,14 @@ module.exports = {
 
     async store(req,res) {
         const {id_usuario} = req.params;
-        const {cidade,descricao,horarios,valor,imagem} = req.body;
+        const {cidade,descricao,horarios,valor,imagem,titulo} = req.body;
         const classificacao = '0';
         const usuario =  await Usuario.findByPk(id_usuario);
-
+      
         if(!usuario)
         return res.status(400).json({error:"Usuário não encontrado"});
+
+        const nome = usuario.nome;
 
          const anuncio = await Anuncio.create({cidade,
             descricao,
@@ -45,6 +47,8 @@ module.exports = {
             valor,
             imagem,
             classificacao,
+            titulo,
+            usuario:nome,
             id_usuario});
 
         return res.json(anuncio);
