@@ -1,5 +1,8 @@
 const Anuncio = require('../models/Anuncio');
 const Usuario = require('../models/Usuario');
+const multer = require('multer');
+const multerconfig = require('../config/multer');
+const fs = require('fs');
 
 module.exports = {
     
@@ -31,17 +34,26 @@ module.exports = {
     },
 
     async store(req,res) {
+        
         const {id_usuario} = req.params;
-        const {cidade,descricao,horarios,valor,imagem,titulo} = req.body;
-        const classificacao = '0';
-        const usuario =  await Usuario.findByPk(id_usuario);
-      
+        const {cidade,descricao,horarios,valor,titulo} = req.body;
+        let classificacao = 0;
+        let imagem;
+
+        if(req.file)
+        imagem = req.file.path;
+        else
+        imagem = "";
+
+        const usuario = await Usuario.findByPk(id_usuario);
+        
         if(!usuario)
         return res.status(400).json({error:"Usuário não encontrado"});
 
         const nome = usuario.nome;
 
-         const anuncio = await Anuncio.create({cidade,
+        const anuncio = await Anuncio.create({
+            cidade,
             descricao,
             horarios,
             valor,
@@ -49,12 +61,15 @@ module.exports = {
             classificacao,
             titulo,
             usuario:nome,
-            id_usuario});
+            id_usuario
+        });
 
         return res.json(anuncio);
+    
 
     },
-
+    
+    /*incluir o uso do multer para pegar a nova imagem e usar o file-system para excluir a imagem velha*/
     async update(req,res){
         const{id_anuncio} = req.params;
         const{cidade,descricao,horarios,valor,imagem} = req.body;
@@ -98,6 +113,9 @@ module.exports = {
         
          if(!anuncio)
          res.status(400).json({error:"Anuncio não encontrado"});
+         
+         if(anuncio.imagem)
+         fs.unlinkSync(anuncio.imagem);
 
          await anuncio.destroy();
 
