@@ -41,7 +41,7 @@ module.exports = {
         let imagem;
 
         if(req.file)
-        imagem = req.file.path;
+        imagem = req.file.filename;
         else
         imagem = "";
 
@@ -69,15 +69,25 @@ module.exports = {
 
     },
     
-    /*incluir o uso do multer para pegar a nova imagem e usar o file-system para excluir a imagem velha*/
     async update(req,res){
         const{id_anuncio} = req.params;
-        const{cidade,descricao,horarios,valor,imagem} = req.body;
+        const{cidade,descricao,horarios,valor} = req.body;
+        let imagem;
+
+        if(req.file)
+        imagem = req.file.filename;
+        else
+        imagem = "";
+
+
 
         const anuncio = await Anuncio.findByPk(id_anuncio);
         
         if(!anuncio)
         return res.status(400).json({error:"Anuncio não encontrado"});
+        
+        if(anuncio.imagem != "")
+        fs.unlinkSync('./src/images/'+anuncio.imagem);
 
         anuncio.cidade = cidade;
         anuncio.descricao = descricao;
@@ -114,8 +124,8 @@ module.exports = {
          if(!anuncio)
          res.status(400).json({error:"Anuncio não encontrado"});
          
-         if(anuncio.imagem)
-         fs.unlinkSync(anuncio.imagem);
+         if(anuncio.imagem != "")
+         fs.unlinkSync('./src/images/'+anuncio.imagem);
 
          await anuncio.destroy();
 

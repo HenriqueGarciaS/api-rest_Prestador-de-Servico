@@ -3,10 +3,10 @@ const path = require('path');
 const crypto = require('crypto');
 
 module.exports = {
-    dest: path.resolve(__dirname,'..','images'),
+    dest: './src/images/',
     storage: multer.diskStorage({
         destination:(req,file,cb) =>{
-            cb(null,path.resolve(__dirname,'..','images'))
+            cb(null,'./src/images/')
         },
         filename: (req,file,cb) =>{
                    crypto.randomBytes(16,(err, hash) =>{

@@ -29,11 +29,11 @@ routes.post('/fazerDenuncia/:id_anuncio',DenunciaController.store);
 routes.post('/deletarUsuario/:id_usuario',UsuarioController.delete);
 routes.post('/deletarAnuncio/:id_anuncio',AnuncioController.delete);
 routes.post('/updateUsuario/:id_usuario',UsuarioController.updateUsuario);
-routes.post('/updateAnuncio/:id_anuncio',AnuncioController.update);
+routes.post('/updateAnuncio/:id_anuncio',multer(multerConfig).single("file"),AnuncioController.update);
 routes.post('/updateAnuncio/novaClassificacao/:id_anuncio',AnuncioController.newClassificacao);
 routes.post('/updateDenuncia/:id_denuncia',DenunciaController.updateDenuncia);
 routes.post('/deleteDenuncia/:id_denuncia',DenunciaController.deleteDenuncia);
 routes.post('/imagem',multer(multerConfig).single("file"), (req,res) =>{
-    return res.json(req.file.path);
+    return res.json(req.file.filename);
 })
 module.exports = routes;
