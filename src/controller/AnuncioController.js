@@ -38,6 +38,7 @@ module.exports = {
         const {id_usuario} = req.params;
         const {cidade,descricao,horarios,valor,titulo} = req.body;
         let classificacao = 0;
+        let total = 0;
         let imagem;
 
         if(req.file)
@@ -61,6 +62,7 @@ module.exports = {
             classificacao,
             titulo,
             usuario:nome,
+            total,
             id_usuario
         });
 
@@ -109,11 +111,11 @@ module.exports = {
         if(!anuncio)
         res.status(400).json({error:"Anuncio não encontrado"});
 
-        anuncio.classificacao = classificacao + anuncio.classificacao;
+       anuncio.total = anuncio.total + 1;
+       anuncio.classificacao = (anuncio.classificacao + classificacao);
+       await anuncio.save();
 
-        await anuncio.save();
-
-        res.json(anuncio);
+        res.json({classificao:(anuncio.classificacao/anuncio.total)});
     },
 
     async delete(req,res){
@@ -131,4 +133,6 @@ module.exports = {
 
          return res.json(anuncio);
     }
+
+    
 }
