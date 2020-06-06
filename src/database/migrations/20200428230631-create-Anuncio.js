@@ -38,7 +38,7 @@ module.exports = {
     },
 
     valor:{
-      type:Sequelize.INTEGER,
+      type:Sequelize.DECIMAL(5,2),
       allowNull:false
     },
 
