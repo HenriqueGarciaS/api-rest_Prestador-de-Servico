@@ -18,6 +18,8 @@ routes.get('/anuncio/:id_usuario',AnuncioController.index);
 routes.get('/anuncios',AnuncioController.findAll);
 routes.get('/chat/:id_usuario',ChatController.findOne);
 routes.get('/denuncia/:id_usuario',DenunciaController.findDenuncia);
+routes.get('/anuncioClassificao/:id_anuncio',AnuncioController.getClassificacao);
+routes.get('/anuncioUsuario/:id_anuncio',AnuncioController.indexOne);
 
 routes.post('/gravarChat',ChatController.store);
 routes.post('/updateChat/:id_chat',ChatController.updateChat);
