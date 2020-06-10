@@ -54,7 +54,7 @@ module.exports = {
         if(req.file)
         imagem = req.file.filename;
         else
-        imagem = "No-image.jpg";
+        imagem = "No-image.png";
 
         const usuario = await Usuario.findByPk(id_usuario);
         
@@ -153,7 +153,7 @@ module.exports = {
          if(!anuncio)
          res.status(400).json({error:"Anuncio não encontrado"});
          
-         if(anuncio.imagem != "")
+         if(anuncio.imagem != "" || anuncio.imagem != "No-image.png")
          fs.unlinkSync('./src/images/'+anuncio.imagem);
 
          await anuncio.destroy();
