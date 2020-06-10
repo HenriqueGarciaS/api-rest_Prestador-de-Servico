@@ -20,6 +20,16 @@ module.exports = {
 
     },
 
+    async indexOne(req,res){
+        const {id_anuncio} = req.params;
+        const anuncio = await Anuncio.findByPk(id_anuncio);
+
+        if(!anuncio)
+        return res.status(400).json("Anuncio não encontrado");
+        else
+        return res.json(anuncio);
+    },
+
     async index(req,res){
         const {id_usuario} = req.params;
 
@@ -44,7 +54,7 @@ module.exports = {
         if(req.file)
         imagem = req.file.filename;
         else
-        imagem = "";
+        imagem = "No-image.jpg";
 
         const usuario = await Usuario.findByPk(id_usuario);
         
@@ -73,29 +83,32 @@ module.exports = {
     
     async update(req,res){
         const{id_anuncio} = req.params;
-        const{cidade,descricao,horarios,valor} = req.body;
+        const{cidade,descricao,horarios,valor,titulo} = req.body;
         let imagem;
 
         if(req.file)
         imagem = req.file.filename;
         else
         imagem = "";
-
-
+        
 
         const anuncio = await Anuncio.findByPk(id_anuncio);
         
         if(!anuncio)
         return res.status(400).json({error:"Anuncio não encontrado"});
         
-        if(anuncio.imagem != "")
+        if(anuncio.imagem != "" && imagem != "")
         fs.unlinkSync('./src/images/'+anuncio.imagem);
+        else
+        imagem = anuncio.imagem;
+
 
         anuncio.cidade = cidade;
         anuncio.descricao = descricao;
         anuncio.horarios = horarios;
         anuncio.valor = valor;
         anuncio.imagem = imagem;
+        anuncio.titulo = titulo;
 
         await anuncio.save();
         return res.json(anuncio);
@@ -115,7 +128,21 @@ module.exports = {
        anuncio.classificacao = (anuncio.classificacao + classificacao);
        await anuncio.save();
 
-        res.json({classificao:(anuncio.classificacao/anuncio.total)});
+        res.json({classificacao:(anuncio.classificacao/anuncio.total)});
+    },
+
+    async getClassificacao(req,res){
+        const {id_anuncio} = req.params;
+        let classificacao;
+
+        const anuncio = await Anuncio.findByPk(id_anuncio);
+
+        if(!anuncio)
+        res.status(400).json({error:"Anuncio não encontrado"});
+
+        classificacao = (anuncio.classificacao/anuncio.total);
+
+        return res.json({classificacao:classificacao});
     },
 
     async delete(req,res){
