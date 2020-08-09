@@ -20,7 +20,7 @@ routes.get('/chat/:id_usuario',ChatController.findOne);
 routes.get('/denuncia/:id_usuario',DenunciaController.findDenuncia);
 routes.get('/anuncioClassificao/:id_anuncio',AnuncioController.getClassificacao);
 routes.get('/anuncioUsuario/:id_anuncio',AnuncioController.indexOne);
-
+routes.get('/anuncioCategoria/:categoria',AnuncioController.findBycategoria);
 routes.post('/gravarChat',ChatController.store);
 routes.post('/updateChat/:id_chat',ChatController.updateChat);
 routes.post('/loginUsuario',UsuarioController.login);

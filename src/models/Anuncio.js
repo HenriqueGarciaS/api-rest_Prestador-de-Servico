@@ -12,7 +12,8 @@ class Anuncio extends Model{
            classificacao:DataTypes.DECIMAL,
            titulo: DataTypes.STRING,
            usuario: DataTypes.STRING,
-           total: DataTypes.INTEGER
+           total: DataTypes.INTEGER,
+           categoria: DataTypes.STRING
         },{
             sequelize : connection
         })
