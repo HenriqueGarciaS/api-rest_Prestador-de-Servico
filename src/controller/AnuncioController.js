@@ -20,6 +20,18 @@ module.exports = {
 
     },
 
+    async findBycategoria(req,res){
+       const {categoria} = req.params;
+       const {Op} = require("sequelize");
+       const anuncio = await Anuncio.findAll({ where:{categoria:{[Op.like]:"%"+categoria+"%"}}});
+
+       if(!anuncio)
+       return res.status(400).json("Anuncios não encontrados");
+
+       return res.json(anuncio);
+
+    },
+
     async indexOne(req,res){
         const {id_anuncio} = req.params;
         const anuncio = await Anuncio.findByPk(id_anuncio);
@@ -46,7 +58,7 @@ module.exports = {
     async store(req,res) {
         
         const {id_usuario} = req.params;
-        const {cidade,descricao,horarios,valor,titulo} = req.body;
+        const {cidade,descricao,horarios,valor,titulo,categoria} = req.body;
         let classificacao = 0;
         let total = 0;
         let imagem;
@@ -73,6 +85,7 @@ module.exports = {
             titulo,
             usuario:nome,
             total,
+            categoria,
             id_usuario
         });
 
@@ -83,7 +96,7 @@ module.exports = {
     
     async update(req,res){
         const{id_anuncio} = req.params;
-        const{cidade,descricao,horarios,valor,titulo} = req.body;
+        const{cidade,descricao,horarios,valor,titulo,categoria} = req.body;
         let imagem;
 
         if(req.file)
@@ -109,6 +122,7 @@ module.exports = {
         anuncio.valor = valor;
         anuncio.imagem = imagem;
         anuncio.titulo = titulo;
+        anuncio.categoria = categoria;
 
         await anuncio.save();
         return res.json(anuncio);
