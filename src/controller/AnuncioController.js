@@ -3,6 +3,7 @@ const Usuario = require('../models/Usuario');
 const multer = require('multer');
 const multerconfig = require('../config/multer');
 const fs = require('fs');
+const { sequelize } = require('../models/Anuncio');
 
 module.exports = {
     
@@ -20,9 +21,27 @@ module.exports = {
 
     },
 
+    async findByfiltros(req,res){
+       const {cidade,valor,classificacao,categoria} = req.body;
+       const {Op, Sequelize} = require('sequelize')
+       console.log(cidade);
+       const anuncio = await Anuncio.findAll({where:{
+        cidade:{[Op.like]:"%"+cidade+"%"},
+        valor:{[Op.like]:"%"+valor+"%"},
+        classificacao:{[Op.like]:"%"+classificacao+"%"},
+        categoria:{[Op.like]:"%"+categoria+"%"}
+       } 
+       });
+       if(!anuncio)
+       return res.status(400).json("Anuncios não encontrados");
+
+       return res.json(anuncio);
+
+    },
+
     async findBycategoria(req,res){
        const {categoria} = req.params;
-       const {Op} = require("sequelize");
+       const {Op, where} = require("sequelize");
        const anuncio = await Anuncio.findAll({ where:{categoria:{[Op.like]:"%"+categoria+"%"}}});
 
        if(!anuncio)
@@ -61,6 +80,7 @@ module.exports = {
         const {cidade,descricao,horarios,valor,titulo,categoria} = req.body;
         let classificacao = 0;
         let total = 0;
+        let pontuacao = 0;
         let imagem;
 
         if(req.file)
@@ -86,6 +106,7 @@ module.exports = {
             usuario:nome,
             total,
             categoria,
+            pontuacao,
             id_usuario
         });
 
@@ -139,24 +160,23 @@ module.exports = {
         res.status(400).json({error:"Anuncio não encontrado"});
 
        anuncio.total = anuncio.total + 1;
-       anuncio.classificacao = (anuncio.classificacao + classificacao);
+       anuncio.pontuacao = (anuncio.pontuacao + classificacao);
        await anuncio.save();
+       anuncio.classificacao = anuncio.pontuacao/anuncio.total;
+       anuncio.save();
 
-        res.json({classificacao:(anuncio.classificacao/anuncio.total)});
+        res.json({classificacao:classificacao});
     },
 
     async getClassificacao(req,res){
         const {id_anuncio} = req.params;
-        let classificacao;
 
         const anuncio = await Anuncio.findByPk(id_anuncio);
 
         if(!anuncio)
         res.status(400).json({error:"Anuncio não encontrado"});
 
-        classificacao = (anuncio.classificacao/anuncio.total);
-
-        return res.json({classificacao:classificacao});
+        return res.json({classificacao:anuncio.classificao});
     },
 
     async delete(req,res){
