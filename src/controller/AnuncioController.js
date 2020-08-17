@@ -79,6 +79,7 @@ module.exports = {
         const usuario = await Usuario.findByPk(id_usuario);
         const {Op} = require("sequelize");
         let historico;
+        let categorias = new Array();
         
         if(!usuario)
         return res.status(400).json({error:"Não foi possivel recuperar historico"});
@@ -90,14 +91,23 @@ module.exports = {
                 id: {[Op.in] : historico }
             }
         });
-       
+
         if(!anuncio)
         return res.status(400).json({error:"Não foram encontrados anuncios que se encaixam com o historico"});
 
-        return res.json(anuncio);
+        for(let i = 0; i < anuncio.length; i++)
+        categorias.push(anuncio[i].categoria);
+        
+        const recomendados = await Anuncio.findAll({
+            wher:{
+                categoria: {[Op.in] : recomendados}
+            }
+        });
 
+        if(!recomendados)
+        return res.status(400).json({error:"Não foi possivel recuperar os recomendados"});
 
-
+        return res.json(recomendados);
     },
 
 
@@ -190,7 +200,7 @@ module.exports = {
        anuncio.pontuacao = (anuncio.pontuacao + classificacao);
        await anuncio.save();
        anuncio.classificacao = anuncio.pontuacao/anuncio.total;
-       anuncio.save();
+       await anuncio.save();
 
         res.json({classificacao:classificacao});
     },

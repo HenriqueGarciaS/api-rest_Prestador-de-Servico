@@ -82,7 +82,7 @@ module.exports = {
 
         usuario.historico = usuario.historico + "," + id_anuncio;
 
-        usuario.save();
+        await usuario.save();
         return res.json(usuario);
     },
 
