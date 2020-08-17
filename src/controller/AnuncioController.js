@@ -76,25 +76,27 @@ module.exports = {
 
     async findByhistorico(req,res){
         const{id_usuario} = req.params;
-        const usuario = awair.findByPk(id_usuario);
-        let anuncio;
-        let anuncios = new Array();
-        let historico = new Array();
+        const usuario = await Usuario.findByPk(id_usuario);
+        const {Op} = require("sequelize");
+        let historico;
         
         if(!usuario)
-        return res.status(400).json({error:"Histórico do usuário não encontrado"});
+        return res.status(400).json({error:"Não foi possivel recuperar historico"});
 
         historico = usuario.historico.split(",");
 
-        for(let i = 0; historico.length; i++){
-            anuncio = await Anuncio.findByPk(historico[i]);
-            if(!anuncio)
-            anuncios.push("Anuncio não existe mais");
-            else
-            anuncios.push(anuncio);
-        }
+        const anuncio = await Anuncio.findAll({
+            where:{
+                id: {[Op.in] : historico }
+            }
+        });
+       
+        if(!anuncio)
+        return res.status(400).json({error:"Não foram encontrados anuncios que se encaixam com o historico"});
 
-            res.json(anuncios);
+        return res.json(anuncio);
+
+
 
     },
 
