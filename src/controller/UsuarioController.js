@@ -70,6 +70,22 @@ module.exports = {
             return res.json(usuario.nome);
     },
 
+
+    async updateHistorico(req,res){
+        const {id_usuario} = req.params;
+        const {id_anuncio} = req.body;
+
+        const usuario = await Usuario.findByPk(id_usuario);
+
+        if(!usuario)
+        return res.json("Não foi possivel atualizar o histórico do usuário");
+
+        usuario.historico = usuario.historico + "," + id_anuncio;
+
+        usuario.save();
+        return res.json(usuario);
+    },
+
     async updateFavoritos(req,res){
         const{id_usuario} = req.params;
         const {anuncio_favorito} = req.body;

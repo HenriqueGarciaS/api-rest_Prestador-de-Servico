@@ -74,6 +74,31 @@ module.exports = {
 
     },
 
+    async findByhistorico(req,res){
+        const{id_usuario} = req.params;
+        const usuario = awair.findByPk(id_usuario);
+        let anuncio;
+        let anuncios = new Array();
+        let historico = new Array();
+        
+        if(!usuario)
+        return res.status(400).json({error:"Histórico do usuário não encontrado"});
+
+        historico = usuario.historico.split(",");
+
+        for(let i = 0; historico.length; i++){
+            anuncio = await Anuncio.findByPk(historico[i]);
+            if(!anuncio)
+            anuncios.push("Anuncio não existe mais");
+            else
+            anuncios.push(anuncio);
+        }
+
+            res.json(anuncios);
+
+    },
+
+
     async store(req,res) {
         
         const {id_usuario} = req.params;
