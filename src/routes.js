@@ -25,7 +25,7 @@ routes.get('/anuncioCategoria/:categoria',AnuncioController.findBycategoria);
 routes.post('/gravarChat',ChatController.store);
 routes.post('/updateChat/:id_chat',ChatController.updateChat);
 routes.post('/loginUsuario',UsuarioController.login);
-routes.post('/usuario',UsuarioController.store);
+routes.post('/usuario',multer(multerConfig).single("file"),UsuarioController.store);
 routes.post('/anuncioFavorito/:id_usuario',UsuarioController.updateFavoritos);
 routes.post('/fazeranuncio/:id_usuario',multer(multerConfig).single("file"),AnuncioController.store);
 routes.post('/fazerDenuncia/:id_anuncio',DenunciaController.store);

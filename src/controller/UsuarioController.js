@@ -1,4 +1,7 @@
 const  Usuario = require('../models/Usuario');
+const multer = require('multer');
+const multerconfig = require('../config/multer');
+
 
 
 module.exports = {
@@ -37,16 +40,37 @@ module.exports = {
         if(!usuario)
             return res.status(400).json({error: "Usuário não encontrado"});
 
-            await Usuario.destroy();
+            usuario.removido = "1";
+            await usuario.save();
             return res.json(usuario);
         
 
     },
 
     async store(req,res) {
-        const { nome, senha, telefone, estado, cidade, email} = req.body;
-        const usuario = await Usuario.create({nome,senha,telefone,estado,cidade,email});
-        return res.json(usuario);
+        const{nome,senha,telefone,estado,cidade,email} = req.body;
+        let foto;
+
+       if(req.file)
+       foto = req.file.filename;
+       else
+       foto = '';
+
+       const usuario = await Usuario.create({
+           nome,
+           senha,
+           telefone,
+           estado,
+           cidade,
+           email,
+           historico:"",
+           removido:"",
+           foto,
+       })
+
+       return res.json({status:'Usuario criado'});
+
+
     },
 
     async updateUsuario(req,res){
