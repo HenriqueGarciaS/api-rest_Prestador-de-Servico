@@ -68,7 +68,7 @@ module.exports = {
            foto,
        })
 
-       return res.json({status:'Usuario criado'});
+       return res.json({usuario});
 
 
     },
