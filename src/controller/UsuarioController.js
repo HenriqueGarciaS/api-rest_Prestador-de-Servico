@@ -29,6 +29,7 @@ module.exports = {
 
         if(!usuario)
         return res.status(400).json({error:"Usuário não encontrado"});
+        usuario.senha = "";
 
         return res.json(usuario);
     },
@@ -68,7 +69,7 @@ module.exports = {
            foto,
        })
 
-       return res.json({usuario});
+       return res.json({id:usuario.id});
 
 
     },
