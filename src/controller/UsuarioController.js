@@ -1,4 +1,7 @@
 const  Usuario = require('../models/Usuario');
+const multer = require('multer');
+const multerconfig = require('../config/multer');
+
 
 
 module.exports = {
@@ -26,6 +29,7 @@ module.exports = {
 
         if(!usuario)
         return res.status(400).json({error:"Usuário não encontrado"});
+        usuario.senha = "";
 
         return res.json(usuario);
     },
@@ -37,16 +41,37 @@ module.exports = {
         if(!usuario)
             return res.status(400).json({error: "Usuário não encontrado"});
 
-            await Usuario.destroy();
+            usuario.removido = "1";
+            await usuario.save();
             return res.json(usuario);
         
 
     },
 
     async store(req,res) {
-        const { nome, senha, telefone, estado, cidade, email} = req.body;
-        const usuario = await Usuario.create({nome,senha,telefone,estado,cidade,email});
-        return res.json(usuario);
+        const{nome,senha,telefone,estado,cidade,email} = req.body;
+        let foto;
+
+       if(req.file)
+       foto = req.file.filename;
+       else
+       foto = '';
+
+       const usuario = await Usuario.create({
+           nome,
+           senha,
+           telefone,
+           estado,
+           cidade,
+           email,
+           historico:"",
+           removido:"",
+           foto,
+       })
+
+       return res.json({id:usuario.id});
+
+
     },
 
     async updateUsuario(req,res){
@@ -68,6 +93,22 @@ module.exports = {
             await usuario.save();
 
             return res.json(usuario.nome);
+    },
+
+
+    async updateHistorico(req,res){
+        const {id_usuario} = req.params;
+        const {id_anuncio} = req.body;
+
+        const usuario = await Usuario.findByPk(id_usuario);
+
+        if(!usuario)
+        return res.json("Não foi possivel atualizar o histórico do usuário");
+
+        usuario.historico = usuario.historico + "," + id_anuncio;
+
+        await usuario.save();
+        return res.json(usuario);
     },
 
     async updateFavoritos(req,res){
