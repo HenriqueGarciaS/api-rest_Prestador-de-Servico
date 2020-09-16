@@ -56,7 +56,7 @@ module.exports = {
         const anuncio = await Anuncio.findByPk(id_anuncio);
 
         if(!anuncio)
-        return res.status(400).json("Anuncio não encontrado");
+        return res.status(400).json({ERROR:"Anuncio não Encontrado"});
         else
         return res.json(anuncio);
     },
@@ -123,7 +123,7 @@ module.exports = {
         if(req.file)
         imagem = req.file.filename;
         else
-        imagem = "No-image.png";
+        imagem = "";
 
         const usuario = await Usuario.findByPk(id_usuario);
         
