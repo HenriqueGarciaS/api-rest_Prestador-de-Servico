@@ -134,6 +134,7 @@ module.exports = {
 
         const nome = usuario.nome;
 
+
         const anuncio = await Anuncio.create({
             cidade,
             descricao,
