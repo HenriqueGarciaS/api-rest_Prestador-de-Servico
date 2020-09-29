@@ -14,7 +14,7 @@ module.exports = {
         if(!usuario)
         return res.status(400).json({error: "Usuário não encontrado"});
 
-        return res.json({id:usuario.id,foto:usuario.foto});
+        return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome)});
     },
 
     async index(req,res){
@@ -70,7 +70,7 @@ module.exports = {
            foto,
        })
 
-       return res.json({id:usuario.id,foto:usuario.foto});
+       return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome)});
 
 
     },
