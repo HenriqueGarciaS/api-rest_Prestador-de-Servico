@@ -14,7 +14,7 @@ module.exports = {
         if(!usuario)
         return res.status(400).json({error: "Usuário não encontrado"});
 
-        return res.json({id:usuario.id});
+        return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome)});
     },
 
     async index(req,res){
@@ -49,7 +49,7 @@ module.exports = {
     },
 
     async store(req,res) {
-        const{nome,senha,telefone,estado,cidade,email} = req.body;
+        const{nome,sobrenome,senha,telefone,estado,cidade,email} = req.body;
         let foto;
 
        if(req.file)
@@ -59,6 +59,7 @@ module.exports = {
 
        const usuario = await Usuario.create({
            nome,
+           sobrenome,
            senha,
            telefone,
            estado,
@@ -69,7 +70,7 @@ module.exports = {
            foto,
        })
 
-       return res.json({id:usuario.id});
+       return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome)});
 
 
     },

@@ -5,6 +5,7 @@ class Usuario extends Model{
     static init(connection){
         super.init({
             nome: DataTypes.STRING,
+            sobrenome: DataTypes.STRING,
             senha: DataTypes.STRING,
             telefone: DataTypes.STRING,
             estado: DataTypes.STRING,

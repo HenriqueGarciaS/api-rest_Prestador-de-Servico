@@ -11,7 +11,9 @@ module.exports = {
     async findAll(req,res){
 
 
-        const anuncio = await Anuncio.findAll();
+        const anuncio = await Anuncio.findAll({
+            order:[["id","DESC"]],
+            limit : 4});
 
         if(!anuncio)
         return res.status(400).json({error:"Nenhum anuncio registrado"});
@@ -23,7 +25,7 @@ module.exports = {
 
     async findByfiltros(req,res){
        const {cidade,valor,classificacao,categoria} = req.body;
-       const {Op, Sequelize} = require('sequelize')
+       const {Op, Sequelize, where} = require('sequelize')
        console.log(cidade);
        const anuncio = await Anuncio.findAll({where:{
         cidade:{[Op.like]:"%"+cidade+"%"},
@@ -131,6 +133,7 @@ module.exports = {
         return res.status(400).json({error:"Usuário não encontrado"});
 
         const nome = usuario.nome;
+
 
         const anuncio = await Anuncio.create({
             cidade,
