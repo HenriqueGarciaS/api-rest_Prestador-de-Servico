@@ -20,6 +20,15 @@ module.exports = {
           }
         },
 
+        id_prestador:{
+          type: Sequelize.INTEGER,
+          allowNULL:false,
+          references:{
+            model:'Usuario',
+            key:'id'
+          }
+        },
+
         id_anuncio:{
           type : Sequelize.INTEGER,
           allowNull: false,

@@ -10,6 +10,7 @@ class Denuncia extends Model{
     }
      
     static associate(models){
+        this.belongsTo(models.Usuario,{foreignKey:"id_prestador"});
         this.belongsTo(models.Usuario,{foreignKey:"id_contrante"});
         this.belongsTo(models.Usuario,{foreignKey:"id_anuncio"});
     }
