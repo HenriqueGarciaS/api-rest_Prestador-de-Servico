@@ -15,6 +15,17 @@ module.exports = {
       return res.json(denuncias);
    }, 
 
+   async findDenuncias(req,res){
+      const {id_usuario} = req.params;
+      
+      const denuncias = await Denuncia.findAll({where:{id_prestador:id_usuario}});
+
+      if(!denuncias)
+      return res.status(400).json({error:"Nenhum denuncia sobre os anuncios foram feitas"});
+
+      return res.json(denuncias);
+   },
+
    async store(req,res){
       const{id_anuncio} = req.params;
       const{id_contrante,id_prestador,descricao} = req.body;
