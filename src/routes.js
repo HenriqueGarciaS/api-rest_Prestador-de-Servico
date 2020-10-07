@@ -18,6 +18,7 @@ routes.get('/anuncio/:id_usuario',AnuncioController.index);
 routes.get('/anuncios',AnuncioController.findAll);
 routes.get('/chat/:id_usuario',ChatController.findOne);
 routes.get('/denuncia/:id_usuario',DenunciaController.findDenuncia);
+routes.get('/denunciaPrestador/:id_usuario',DenunciaController.findDenuncias);
 routes.get('/anuncioClassificao/:id_anuncio',AnuncioController.getClassificacao);
 routes.get('/anuncioDetalhes/:id_anuncio',AnuncioController.indexOne);
 routes.get('/anuncioCategoria/:categoria',AnuncioController.findBycategoria);
