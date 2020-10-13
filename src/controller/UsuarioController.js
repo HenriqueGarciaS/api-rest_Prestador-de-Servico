@@ -77,23 +77,28 @@ module.exports = {
 
     async updateUsuario(req,res){
         const {id_usuario} = req.params;
-        const {nome,senha,telefone,estado,cidade,email} = req.body;
+        const {nome,sobrenome,senha,telefone,estado,cidade,email} = req.body;
+        let foto;
 
         const usuario = await Usuario.findByPk(id_usuario);
+
 
         if(!usuario)
             return res.status(400).json({error: "Usuário não encontrado"});
 
             usuario.nome = nome;
+            usuario.sobrenome = sobrenome;
             usuario.senha = senha;
             usuario.telefone = telefone;
             usuario.estado = estado;
             usuario.cidade = cidade;
             usuario.email = email;
+            if(req.file)
+            usuario.foto = req.file.filename;
 
             await usuario.save();
 
-            return res.json(usuario.nome);
+            return res.json({foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome)});
     },
 
 
