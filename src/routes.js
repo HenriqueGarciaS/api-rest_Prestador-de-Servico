@@ -33,7 +33,7 @@ routes.post('/fazerDenuncia/:id_anuncio',DenunciaController.store);
 routes.post('/anuncioFiltro',AnuncioController.findByfiltros);
 routes.post('/deletarUsuario/:id_usuario',UsuarioController.delete);
 routes.post('/deletarAnuncio/:id_anuncio',AnuncioController.delete);
-routes.post('/updateUsuario/:id_usuario',UsuarioController.updateUsuario);
+routes.post('/updateUsuario/:id_usuario',multer(multerConfig).single("file"),UsuarioController.updateUsuario);
 routes.post('/updateAnuncio/:id_anuncio',multer(multerConfig).single("file"),AnuncioController.update);
 routes.post('/updateAnuncio/novaClassificacao/:id_anuncio',AnuncioController.newClassificacao);
 routes.post('/updateDenuncia/:id_denuncia',DenunciaController.updateDenuncia);
