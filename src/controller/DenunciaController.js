@@ -4,6 +4,21 @@ const Anuncio = require('../models/Anuncio');
 
 module.exports = {
 
+
+   async index(req,res){
+      const {id_denuncia} = req.params;
+
+
+      const denuncia = await Denuncia.findByPk(id_denuncia);
+
+      if(!denuncia)
+      return res.status(400).json({error:"Denuncia não encontrada"});
+
+      return res.json(denuncia);
+
+
+   },
+
    async findDenuncia(req,res){
       const {id_usuario} = req.params;
       
