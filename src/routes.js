@@ -16,7 +16,7 @@ routes.get('/usuarios',UsuarioController.index);
 routes.get('/usuario/:id_usuario',UsuarioController.FindOne);
 routes.get('/anuncio/:id_usuario',AnuncioController.index);
 routes.get('/anuncios',AnuncioController.findAll);
-routes.get('/chat/:id_usuario',ChatController.findOne);
+routes.get('/chat/:nomeSala',ChatController.findOne);
 routes.get('/denuncia/:id_usuario',DenunciaController.findDenuncia);
 routes.get('/denunciaPrestador/:id_usuario',DenunciaController.findDenuncias);
 routes.get('/verDenuncia/:id_denuncia',DenunciaController.index);
@@ -25,7 +25,7 @@ routes.get('/anuncioDetalhes/:id_anuncio',AnuncioController.indexOne);
 routes.get('/anuncioCategoria/:categoria',AnuncioController.findBycategoria);
 
 routes.post('/gravarChat',ChatController.store);
-routes.post('/updateChat/:id_chat',ChatController.updateChat);
+routes.post('/updateChat/:nomeSala',ChatController.updateChat);
 routes.post('/loginUsuario',UsuarioController.login);
 routes.post('/usuario',multer(multerConfig).single("file"),UsuarioController.store);
 routes.post('/anuncioFavorito/:id_usuario',UsuarioController.updateFavoritos);

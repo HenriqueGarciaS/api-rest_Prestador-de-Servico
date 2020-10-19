@@ -3,7 +3,8 @@ const {Model, DataTypes} = require('sequelize');
 class Chat extends Model{
     static init(connection){
         super.init({
-            mensagens: DataTypes.STRING
+            mensagens: DataTypes.STRING,
+            nome: DataTypes.STRING
         },{
             sequelize:connection
         })
