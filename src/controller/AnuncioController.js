@@ -101,7 +101,7 @@ module.exports = {
         categorias.push(anuncio[i].categoria);
         
         const recomendados = await Anuncio.findAll({
-            wher:{
+            where:{
                 categoria: {[Op.in] : recomendados}
             }
         });
