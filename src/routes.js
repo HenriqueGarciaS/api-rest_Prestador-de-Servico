@@ -17,6 +17,7 @@ routes.get('/usuario/:id_usuario',UsuarioController.FindOne);
 routes.get('/anuncio/:id_usuario',AnuncioController.index);
 routes.get('/anuncios',AnuncioController.findAll);
 routes.get('/chat/:nomeSala',ChatController.findOne);
+routes.get('/todosChats/:id',ChatController.findChats);
 routes.get('/denuncia/:id_usuario',DenunciaController.findDenuncia);
 routes.get('/denunciaPrestador/:id_usuario',DenunciaController.findDenuncias);
 routes.get('/verDenuncia/:id_denuncia',DenunciaController.index);

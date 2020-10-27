@@ -1,3 +1,4 @@
+const { sequelize } = require('../models/Chat');
 const Chat = require('../models/Chat');
 const Usuario = require('../models/Usuario');
 module.exports = {
@@ -13,6 +14,21 @@ module.exports = {
         return res.json(chat.mensagens);
     },
 
+
+    async findChats(req,res){
+        const {id} = req.params
+        console.log(id);
+        const {Op} = require("sequelize")
+        
+        const chat = await Chat.findAll({
+            where : {[Op.or]: [{id_contrante:id}, {id_prestador:id}]}
+        })
+
+        if(!chat)
+        return res.status(400).json({error:"chat não encontrado"});
+
+        return res.json(chat);
+    },
 
     async store(req,res){
         const{id_prestador,id_contrante,nomeSala,mensagens} = req.body;
