@@ -25,7 +25,7 @@ module.exports = {
 
     async findByFiltrosSimples(req,res){
         const {titulo,categoria} = req.body;
-        const {Op} = require('sequelize');
+        const {Op, Sequelize} = require('sequelize');
 
        
         const anuncio = await Anuncio.findAll({
@@ -101,36 +101,26 @@ module.exports = {
         const{id_usuario} = req.params;
         const usuario = await Usuario.findByPk(id_usuario);
         const {Op} = require("sequelize");
-        let historico;
-        let categorias = new Array();
+        const sequelize = require("sequelize");
         
         if(!usuario)
         return res.status(400).json({error:"Não foi possivel recuperar historico"});
 
-        historico = usuario.historico.split(",");
+        let historico = usuario.historico.split(",");
 
         const anuncio = await Anuncio.findAll({
             where:{
-                id: {[Op.in] : historico }
-            }
+                categoria : {[Op.in] : historico},
+                
+            },
+            limit:4,
+            order:[sequelize.fn("rand")]
         });
 
         if(!anuncio)
         return res.status(400).json({error:"Não foram encontrados anuncios que se encaixam com o historico"});
 
-        for(let i = 0; i < anuncio.length; i++)
-        categorias.push(anuncio[i].categoria);
-        
-        const recomendados = await Anuncio.findAll({
-            where:{
-                categoria: {[Op.in] : recomendados}
-            }
-        });
-
-        if(!recomendados)
-        return res.status(400).json({error:"Não foi possivel recuperar os recomendados"});
-
-        return res.json(recomendados);
+        return res.json(anuncio);
     },
 
 

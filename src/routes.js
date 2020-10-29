@@ -24,6 +24,7 @@ routes.get('/verDenuncia/:id_denuncia',DenunciaController.index);
 routes.get('/anuncioClassificao/:id_anuncio',AnuncioController.getClassificacao);
 routes.get('/anuncioDetalhes/:id_anuncio',AnuncioController.indexOne);
 routes.get('/anuncioCategoria/:categoria',AnuncioController.findBycategoria);
+routes.get('/anunciosHistorico/:id_usuario',AnuncioController.findByhistorico);
 
 routes.post('/anuncioFiltros',AnuncioController.findByfiltros)
 routes.post('/anuncioFiltro',AnuncioController.findByFiltrosSimples);
@@ -38,6 +39,7 @@ routes.post('/deletarUsuario/:id_usuario',UsuarioController.delete);
 routes.post('/deletarAnuncio/:id_anuncio',AnuncioController.delete);
 routes.post('/updateUsuario/:id_usuario',multer(multerConfig).single("file"),UsuarioController.updateUsuario);
 routes.post('/updateAnuncio/:id_anuncio',multer(multerConfig).single("file"),AnuncioController.update);
+routes.post('/updateUsuario/newHistorico/:id_usuario',UsuarioController.updateHistorico);
 routes.post('/updateAnuncio/novaClassificacao/:id_anuncio',AnuncioController.newClassificacao);
 routes.post('/updateDenuncia/:id_denuncia',DenunciaController.updateDenuncia);
 routes.post('/deleteDenuncia/:id_denuncia',DenunciaController.deleteDenuncia);

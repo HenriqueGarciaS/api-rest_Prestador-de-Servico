@@ -104,17 +104,26 @@ module.exports = {
 
     async updateHistorico(req,res){
         const {id_usuario} = req.params;
-        const {id_anuncio} = req.body;
+        const {categoria} = req.body;
+
+        console.log(id_usuario);
+
+        console.log(categoria);
 
         const usuario = await Usuario.findByPk(id_usuario);
 
         if(!usuario)
-        return res.json("Não foi possivel atualizar o histórico do usuário");
-
-        usuario.historico = usuario.historico + "," + id_anuncio;
+        return res.json("Usuario não encontrado");
+        
+        if(usuario.historico == "")
+        usuario.historico = categoria;
+        if(usuario.historico != "" && !usuario.historico.includes(categoria))
+        usuario.historico += ","+categoria;
 
         await usuario.save();
-        return res.json(usuario);
+
+        return res.json({status:200});
+
     },
 
     async updateFavoritos(req,res){
