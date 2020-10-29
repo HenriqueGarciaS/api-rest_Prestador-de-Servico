@@ -23,15 +23,36 @@ module.exports = {
 
     },
 
+    async findByFiltrosSimples(req,res){
+        const {titulo,categoria} = req.body;
+        const {Op} = require('sequelize');
+
+       
+        const anuncio = await Anuncio.findAll({
+            where : {
+                titulo: {[Op.like]:"%"+titulo+"%"},
+                categoria:{[Op.like]:"%"+categoria+"%"},
+            }
+        });
+      
+      if(!anuncio)
+        return res.status(400).json("nenhum anuncio encontrado com essas caractericas");
+
+        return res.json(anuncio);
+   
+    
+    },
+
     async findByfiltros(req,res){
-       const {cidade,valor,classificacao,categoria} = req.body;
+       const {cidade,preco,avaliacao,categoria,titulo} = req.body;
        const {Op, Sequelize, where} = require('sequelize')
        console.log(cidade);
        const anuncio = await Anuncio.findAll({where:{
         cidade:{[Op.like]:"%"+cidade+"%"},
-        valor:{[Op.like]:"%"+valor+"%"},
-        classificacao:{[Op.like]:"%"+classificacao+"%"},
-        categoria:{[Op.like]:"%"+categoria+"%"}
+        valor:{[Op.gte]:preco},
+        classificacao:{[Op.gte]:avaliacao},
+        categoria:{[Op.like]:"%"+categoria+"%"},
+        titulo: {[Op.like]: "%"+titulo+"%"}
        } 
        });
        if(!anuncio)
@@ -192,7 +213,7 @@ module.exports = {
 
     async newClassificacao(req,res){
         const {id_anuncio} = req.params;
-        const {classificacao} = req.body;
+        const {nota} = req.body;
 
         const anuncio = await Anuncio.findByPk(id_anuncio);
 
@@ -200,12 +221,12 @@ module.exports = {
         res.status(400).json({error:"Anuncio não encontrado"});
 
        anuncio.total = anuncio.total + 1;
-       anuncio.pontuacao = (anuncio.pontuacao + classificacao);
+       anuncio.pontuacao = (anuncio.pontuacao + nota);
        await anuncio.save();
        anuncio.classificacao = anuncio.pontuacao/anuncio.total;
        await anuncio.save();
 
-        res.json({classificacao:classificacao});
+        res.json({classificacao:nota});
     },
 
     async getClassificacao(req,res){
