@@ -3,6 +3,7 @@ const UserAtivo = require('../models/UserAtivos');
 const multer = require('multer');
 const multerconfig = require('../config/multer');
 const crypto = require('crypto');
+const UserAtivos = require('../models/UserAtivos');
 
 
 
@@ -103,11 +104,17 @@ module.exports = {
 
     async updateUsuario(req,res){
         const {id_usuario} = req.params;
-        const {nome,sobrenome,senha,telefone,estado,cidade,email} = req.body;
+        const {nome,sobrenome,senha,telefone,estado,cidade,email,tokenAuth} = req.body;
         let foto;
+
 
         const usuario = await Usuario.findByPk(id_usuario);
 
+        UserAtivos.removeAttribute('id');
+
+        
+        if(!await UserAtivos.findOne({where:{id_usuario:id_usuario,token:tokenAuth}}))
+        return res.status(400).json("usuário errado tentando registrar algo no banco");
 
         if(!usuario)
             return res.status(400).json({error: "Usuário não encontrado"});
