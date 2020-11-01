@@ -1,6 +1,10 @@
 const  Usuario = require('../models/Usuario');
+const UserAtivo = require('../models/UserAtivos');
 const multer = require('multer');
 const multerconfig = require('../config/multer');
+const crypto = require('crypto');
+const UserAtivos = require('../models/UserAtivos');
+
 
 
 
@@ -14,7 +18,26 @@ module.exports = {
         if(!usuario)
         return res.status(400).json({error: "Usuário não encontrado"});
 
-        return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome)});
+        UserAtivo.removeAttribute('id');
+
+        const userAtivo = await UserAtivo.create({id_usuario:usuario.id,token:crypto.randomBytes(16).toString('hex')});
+
+        return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome),tokenAuth:userAtivo.token});
+    },
+
+    async logout(req,res){
+        const {token} = req.params;
+
+        const userAtivo = await UserAtivo.destroy({
+            where:{
+                id_usuario: token
+            }
+        });
+
+        if(!userAtivo)
+        return res.status(400).json('usuário não está ativo');
+
+        return res.json('usuario não está mais ativo');
     },
 
     async index(req,res){
@@ -68,20 +91,30 @@ module.exports = {
            historico:"",
            removido:"",
            foto,
-       })
+       });
 
-       return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome)});
+       UserAtivo.removeAttribute('id');
+
+       const userAtivo = await UserAtivo.create({id_usuario:usuario.id,token:crypto.randomBytes(16).toString('hex')});
+
+       return res.json({id:usuario.id,foto:usuario.foto,nome:(usuario.nome+" "+usuario.sobrenome),tokenAuth:userAtivo.token});
 
 
     },
 
     async updateUsuario(req,res){
         const {id_usuario} = req.params;
-        const {nome,sobrenome,senha,telefone,estado,cidade,email} = req.body;
+        const {nome,sobrenome,senha,telefone,estado,cidade,email,tokenAuth} = req.body;
         let foto;
+
 
         const usuario = await Usuario.findByPk(id_usuario);
 
+        UserAtivos.removeAttribute('id');
+
+        
+        if(!await UserAtivos.findOne({where:{id_usuario:id_usuario,token:tokenAuth}}))
+        return res.status(400).json("usuário errado tentando registrar algo no banco");
 
         if(!usuario)
             return res.status(400).json({error: "Usuário não encontrado"});

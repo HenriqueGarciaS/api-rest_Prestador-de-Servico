@@ -1,5 +1,6 @@
 const Anuncio = require('../models/Anuncio');
 const Usuario = require('../models/Usuario');
+const UserAtvios = require('../models/UserAtivos');
 const multer = require('multer');
 const multerconfig = require('../config/multer');
 const fs = require('fs');
@@ -127,7 +128,7 @@ module.exports = {
     async store(req,res) {
         
         const {id_usuario} = req.params;
-        const {cidade,descricao,horarios,valor,titulo,categoria} = req.body;
+        const {cidade,descricao,horarios,valor,titulo,categoria,tokenAuth} = req.body;
         let classificacao = 0;
         let total = 0;
         let pontuacao = 0;
@@ -145,7 +146,14 @@ module.exports = {
 
         const nome = usuario.nome;
 
+        UserAtvios.removeAttribute('id');
 
+        
+        if(!await UserAtvios.findOne({where:{id_usuario:id_usuario,token:tokenAuth}}))
+        return res.status(400).json("usuário errado tentando registrar algo no banco");
+
+
+        
         const anuncio = await Anuncio.create({
             cidade,
             descricao,
@@ -168,13 +176,18 @@ module.exports = {
     
     async update(req,res){
         const{id_anuncio} = req.params;
-        const{cidade,descricao,horarios,valor,titulo,categoria} = req.body;
+        const{cidade,descricao,horarios,valor,titulo,categoria,tokenAuth,id_usuario} = req.body;
         let imagem;
 
         if(req.file)
         imagem = req.file.filename;
         else
         imagem = "";
+
+        UserAtvios.removeAttribute('id');
+
+        if(!await UserAtvios.findOne({where:{id_usuario:id_usuario,token:tokenAuth}}))
+        return res.status(400).json("usuário errado tentando registrar algo no banco");
         
 
         const anuncio = await Anuncio.findByPk(id_anuncio);

@@ -1,4 +1,5 @@
 const Denuncia = require('../models/Denuncia');
+const UserAtivos = require('../models/UserAtivos');
 const Usuario = require('../models/Usuario');
 const Anuncio = require('../models/Anuncio');
 
@@ -43,9 +44,14 @@ module.exports = {
 
    async store(req,res){
       const{id_anuncio} = req.params;
-      const{id_contrante,id_prestador,descricao} = req.body;
+      const{id_contrante,id_prestador,descricao,tokenAuth,id_usuario} = req.body;
 
       const anuncio = await Anuncio.findByPk(id_anuncio);
+
+      UserAtivos.removeAttribute('id');
+
+      if(!await UserAtivos.findOne({where:{id_usuario:id_usuario,token:tokenAuth}}))
+       return res.status(400).json('usuário errado tentando alterar denuncia');
 
       if(!anuncio)
       return res.status(400).json({error:"Anuncio não encontrado"});
@@ -57,7 +63,12 @@ module.exports = {
 
    async updateDenuncia(req,res){
        const{id_denuncia} = req.params;
-       const{descricao} = req.body;
+       const{descricao,tokenAuth,id_usuario} = req.body;
+
+       UserAtivos.removeAttribute('id');
+
+       if(!await UserAtivos.findOne({where:{id_usuario:id_usuario,token:tokenAuth}}))
+       return res.status(400).json('usuário errado tentando alterar denuncia');
 
        const denuncia = await Denuncia.findByPk(id_denuncia);
 
