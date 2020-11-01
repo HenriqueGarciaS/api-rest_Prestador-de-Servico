@@ -6,6 +6,7 @@ const UsuarioController = require('./controller/UsuarioController');
 const AnuncioController = require('./controller/AnuncioController');
 const ChatController = require('./controller/ChatController');
 const DenunciaController = require('./controller/DenunciaController');
+const AgendaController = require('./controller/AgendaController');
 const routes = express.Router();
 
 routes.get('/',(req,res) =>{
@@ -25,7 +26,10 @@ routes.get('/anuncioClassificao/:id_anuncio',AnuncioController.getClassificacao)
 routes.get('/anuncioDetalhes/:id_anuncio',AnuncioController.indexOne);
 routes.get('/anuncioCategoria/:categoria',AnuncioController.findBycategoria);
 routes.get('/anunciosHistorico/:id_usuario',AnuncioController.findByhistorico);
+routes.get('/agenda/:id_usuario',AgendaController.findCompromissos);
+routes.get('/logout/:token',UsuarioController.logout);
 
+routes.post('/criaCompromisso',AgendaController.store);
 routes.post('/anuncioFiltros',AnuncioController.findByfiltros)
 routes.post('/anuncioFiltro',AnuncioController.findByFiltrosSimples);
 routes.post('/gravarChat',ChatController.store);
