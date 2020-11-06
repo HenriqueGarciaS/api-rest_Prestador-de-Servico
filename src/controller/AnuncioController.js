@@ -26,7 +26,7 @@ module.exports = {
 
     async findByFiltrosSimples(req,res){
         const {titulo,categoria} = req.body;
-        const {Op, Sequelize} = require('sequelize');
+        const {Op,Sequelize} = require('sequelize');
 
        
         const anuncio = await Anuncio.findAll({
@@ -60,6 +60,30 @@ module.exports = {
        return res.status(400).json("Anuncios não encontrados");
 
        return res.json(anuncio);
+
+    },
+
+    async getCidades(req,res){
+        
+        const anuncio = await Anuncio.findAll({
+            attributes:['cidade'],
+            
+        });
+
+        if(!anuncio)
+        return res.status(400).json('cidades não encontradas');
+
+        for(let i = 0; i < anuncio.length; i++)
+        anuncio[i].cidade = anuncio[i].cidade.charAt(0).toUpperCase() + anuncio[i].cidade.slice(1);
+
+        let cidades = [];
+
+        for(let i = 0; i < anuncio.length; i++)
+            if(!cidades.includes(anuncio[i].cidade))
+            cidades.push(anuncio[i].cidade);
+        
+
+        return res.json(cidades);
 
     },
 
