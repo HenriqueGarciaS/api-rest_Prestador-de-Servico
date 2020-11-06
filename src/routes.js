@@ -28,6 +28,7 @@ routes.get('/anuncioCategoria/:categoria',AnuncioController.findBycategoria);
 routes.get('/anunciosHistorico/:id_usuario',AnuncioController.findByhistorico);
 routes.get('/agenda/:id_usuario',AgendaController.findCompromissos);
 routes.get('/logout/:token',UsuarioController.logout);
+routes.get('/filtroCidades',AnuncioController.getCidades);
 
 routes.post('/criaCompromisso',AgendaController.store);
 routes.post('/anuncioFiltros',AnuncioController.findByfiltros)
