@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "git pull && npx sequelize db:migrate && nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "build": " git pull && npx sequelize db:create && nodemon src/server.js",
+    "newBuild" : "git pull && npx sequelize db:migrate:undo:all && npx sequelize db:migrate && nodemon src/server.js"
   },
   "author": "",
   "license": "ISC",
