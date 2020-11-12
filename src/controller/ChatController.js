@@ -31,10 +31,12 @@ module.exports = {
     },
 
     async store(req,res){
-        const{id_prestador,id_contrante,nomeSala,mensagens} = req.body;
+        const {id_prestador,id_contrante,id_anuncio,nomeSala,mensagens} = req.body;
         
         const prestador = await Usuario.findByPk(id_prestador);
         const contrante = await Usuario.findByPk(id_contrante);
+
+        console.log(id_anuncio);
 
         if(!contrante || !prestador)
         return res.status(400).json({error:"Usuários não foram encontrados"})
@@ -44,7 +46,7 @@ module.exports = {
         if(sala)
             return res.json({sala:"Sala já criada"})
         
-        const chat = await Chat.create({id_prestador,id_contrante,mensagens,nome:nomeSala});
+        const chat = await Chat.create({id_prestador:id_prestador,id_contrante:id_contrante,id_anuncio:id_anuncio,mensagens:mensagens,nome:nomeSala});
     
         return res.json({sala:chat.nome});
     },

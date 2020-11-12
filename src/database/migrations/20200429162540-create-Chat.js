@@ -28,6 +28,15 @@ module.exports = {
       }
     },
 
+    id_anuncio:{
+      type: Sequelize.INTEGER,
+      allowNull:false,
+      references:{
+        model:'Anuncio',
+        key:'id'
+      }
+    },
+
     mensagens:{
        type:Sequelize.STRING,
        allowNull:true

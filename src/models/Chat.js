@@ -13,6 +13,7 @@ class Chat extends Model{
     static associate(models){
         this.belongsTo(models.Usuario,{foreignKey:"id_prestador"});
         this.belongsTo(models.Usuario,{foreignKey:"id_contrante"});
+        this.belongsTo(models.Anuncio,{foreignKey:"id_anuncio"});
     }
 }
 
