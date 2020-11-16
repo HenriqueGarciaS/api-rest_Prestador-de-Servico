@@ -6,7 +6,8 @@ class Agenda extends Model {
    static init(connection){
        super.init({
            data: DataTypes.STRING,
-           nome_anuncio:DataTypes.STRING
+           nome_anuncio:DataTypes.STRING,
+           horario: DataTypes.STRING
        },{
            sequelize:connection
        })
