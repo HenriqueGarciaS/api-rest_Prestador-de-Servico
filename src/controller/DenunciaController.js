@@ -2,6 +2,7 @@ const Denuncia = require('../models/Denuncia');
 const UserAtivos = require('../models/UserAtivos');
 const Usuario = require('../models/Usuario');
 const Anuncio = require('../models/Anuncio');
+const fs = require('fs');
 
 module.exports = {
 
@@ -45,6 +46,13 @@ module.exports = {
    async store(req,res){
       const{id_anuncio} = req.params;
       const{id_contrante,id_prestador,descricao,tokenAuth,id_usuario} = req.body;
+      let imagem;
+
+      if(req.file)
+      imagem = req.file.filename;
+      else
+      imagem = "";
+      
 
       const anuncio = await Anuncio.findByPk(id_anuncio);
 
@@ -56,7 +64,7 @@ module.exports = {
       if(!anuncio)
       return res.status(400).json({error:"Anuncio não encontrado"});
 
-      const denuncia = await Denuncia.create({id_anuncio,id_prestador,id_contrante,descricao});
+      const denuncia = await Denuncia.create({id_anuncio,id_prestador,id_contrante,descricao,imagem});
 
       return res.json(denuncia);
    },
@@ -64,6 +72,12 @@ module.exports = {
    async updateDenuncia(req,res){
        const{id_denuncia} = req.params;
        const{descricao,tokenAuth,id_usuario} = req.body;
+       let imagem;
+
+        if(req.file)
+        imagem = req.file.filename;
+        else
+        imagem = "";
 
        UserAtivos.removeAttribute('id');
 
@@ -75,7 +89,15 @@ module.exports = {
        if(!denuncia)
        res.status(400).json({error:"Denuncia não encontrada"});
 
+       if(denuncia.imagem != "" && req.file)
+       fs.unlinkSync('./src/images/'+denuncia.imagem);
+       else
+       imagem = denuncia.imagem;
+
+
+
        denuncia.descricao = descricao;
+       denuncia.imagem = imagem;
 
        await denuncia.save();
 

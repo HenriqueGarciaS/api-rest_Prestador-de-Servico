@@ -3,7 +3,8 @@ const { Model, DataTypes} = require('sequelize');
 class Denuncia extends Model{
     static init(connection){
         super.init({
-            descricao: DataTypes.STRING
+            descricao: DataTypes.STRING,
+            imagem:DataTypes.STRING
         },{
             sequelize:connection
         })
