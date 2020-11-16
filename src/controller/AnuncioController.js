@@ -190,6 +190,7 @@ module.exports = {
             total,
             categoria,
             pontuacao,
+            visualizacao:0,
             id_usuario
         });
 
@@ -238,6 +239,25 @@ module.exports = {
 
     },
 
+    async updateVisualizacao(req,res){
+
+        const {id_anuncio} = req.params;
+
+        const anuncio = await Anuncio.findByPk(id_anuncio);
+
+        if(!anuncio)
+        return res.status(400).json('anuncio não encontrado');
+
+        anuncio.visualizacao = anuncio.visualizacao + 1;
+
+        await anuncio.save();
+
+        return res.json(anuncio);
+
+
+
+    },
+
     async newClassificacao(req,res){
         const {id_anuncio} = req.params;
         const {nota} = req.body;
@@ -281,7 +301,33 @@ module.exports = {
          await anuncio.destroy();
 
          return res.json(anuncio);
+    },
+
+    async getEstatisticas(req,res){
+        const {id_usuario} = req.params;
+
+        const classificacao = await Anuncio.findAll(
+            {
+                where:{id_usuario:id_usuario},
+                order:[["classificacao","DESC"]],
+                limit:3
+            });
+        
+        const visualizacao = await Anuncio.findAll({
+
+            where:{id_usuario:id_usuario},
+            order:[['visualizacao','DESC']],
+            limit:3
+        });
+
+
+        if(!classificacao || !visualizacao)
+        return res.status(400).json('falha ao recuperar estatisticas');
+
+        return res.json({classificacao,visualizacao});
     }
+
+
 
     
 }

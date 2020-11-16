@@ -14,7 +14,8 @@ class Anuncio extends Model{
            usuario: DataTypes.STRING,
            total: DataTypes.INTEGER,
            categoria: DataTypes.STRING,
-           pontuacao:DataTypes.DECIMAL
+           pontuacao:DataTypes.DECIMAL,
+           visualizacao: DataTypes.INTEGER
         },{
             sequelize : connection
         })

@@ -29,6 +29,10 @@ routes.get('/anunciosHistorico/:id_usuario',AnuncioController.findByhistorico);
 routes.get('/agenda/:id_usuario',AgendaController.findCompromissos);
 routes.get('/logout/:token',UsuarioController.logout);
 routes.get('/filtroCidades',AnuncioController.getCidades);
+routes.get('/updateVisualizacao/:id_anuncio',AnuncioController.updateVisualizacao);
+routes.get('/estatisticas/:id_usuario',AnuncioController.getEstatisticas);
+
+
 
 routes.post('/criaCompromisso',AgendaController.store);
 routes.post('/anuncioFiltros',AnuncioController.findByfiltros)
