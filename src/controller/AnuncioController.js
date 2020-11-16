@@ -309,20 +309,22 @@ module.exports = {
         const classificacao = await Anuncio.findAll(
             {
                 where:{id_usuario:id_usuario},
-                order:[["classificacao","DESC"]], 
+                order:[["classificacao","DESC"]],
+                limit:3
             });
         
         const visualizacao = await Anuncio.findAll({
 
             where:{id_usuario:id_usuario},
             order:[['visualizacao','DESC']],
+            limit:3
         });
 
 
         if(!classificacao || !visualizacao)
         return res.status(400).json('falha ao recuperar estatisticas');
 
-        return res.json(classificacao,visualizacao);
+        return res.json({classificacao,visualizacao});
     }
 
 

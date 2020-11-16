@@ -30,6 +30,7 @@ routes.get('/agenda/:id_usuario',AgendaController.findCompromissos);
 routes.get('/logout/:token',UsuarioController.logout);
 routes.get('/filtroCidades',AnuncioController.getCidades);
 routes.get('/updateVisualizacao/:id_anuncio',AnuncioController.updateVisualizacao);
+routes.get('/estatisticas/:id_usuario',AnuncioController.getEstatisticas);
 
 
 
