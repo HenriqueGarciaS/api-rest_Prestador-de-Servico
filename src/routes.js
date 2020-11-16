@@ -39,14 +39,14 @@ routes.post('/loginUsuario',UsuarioController.login);
 routes.post('/usuario',multer(multerConfig).single("file"),UsuarioController.store);
 routes.post('/anuncioFavorito/:id_usuario',UsuarioController.updateFavoritos);
 routes.post('/fazeranuncio/:id_usuario',multer(multerConfig).single("file"),AnuncioController.store);
-routes.post('/fazerDenuncia/:id_anuncio',DenunciaController.store);
+routes.post('/fazerDenuncia/:id_anuncio',multer(multerConfig).single('file'),DenunciaController.store);
 routes.post('/deletarUsuario/:id_usuario',UsuarioController.delete);
 routes.post('/deletarAnuncio/:id_anuncio',AnuncioController.delete);
 routes.post('/updateUsuario/:id_usuario',multer(multerConfig).single("file"),UsuarioController.updateUsuario);
 routes.post('/updateAnuncio/:id_anuncio',multer(multerConfig).single("file"),AnuncioController.update);
 routes.post('/updateUsuario/newHistorico/:id_usuario',UsuarioController.updateHistorico);
 routes.post('/updateAnuncio/novaClassificacao/:id_anuncio',AnuncioController.newClassificacao);
-routes.post('/updateDenuncia/:id_denuncia',DenunciaController.updateDenuncia);
+routes.post('/updateDenuncia/:id_denuncia',multer(multerConfig).single('file'),DenunciaController.updateDenuncia);
 routes.post('/deleteDenuncia/:id_denuncia',DenunciaController.deleteDenuncia);
 routes.post('/imagem',multer(multerConfig).single("file"), (req,res) =>{
     return res.json(req.file.filename);
