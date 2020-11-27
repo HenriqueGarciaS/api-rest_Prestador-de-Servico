@@ -21,6 +21,19 @@ module.exports = {
 
    },
 
+   async findDenunciaById(req,res){
+
+      const {id_anuncio} = req.params;
+
+      const denuncias = await Denuncia.findAll({where:{id_anuncio:id_anuncio}});
+
+      if(!denuncias)
+      return res.status(400).json({error:"Anuncio não possui denuncia"});
+
+      return res.json(denuncias);
+
+   },
+
    async findDenuncia(req,res){
       const {id_usuario} = req.params;
       
